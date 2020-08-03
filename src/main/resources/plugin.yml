@@ -1,0 +1,24 @@
+name: RPGCore
+version: ${project.version}
+main: de.tim.rpgcore.Main
+api-version: 1.8
+commands:
+  reloadrpgcore:
+    description: Reloads the config
+    usage: /<command>
+    permission: RPGCore.reload
+
+permissions:
+  RPGCore.*:
+    description: Grants access to all RPGCore commands
+    children:
+      RPGCore.admin:
+        description: Grants access to all RPGCore admin commands
+        children:
+          RPGCore.reload:
+            description: Perm to reload the config
+      RPGCore.user:
+        description: Grants access to all RPGCore user commands
+        children:
+
+

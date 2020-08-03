@@ -1,0 +1,6 @@
+classes:
+  Knight: IRON_SWORD
+  Wizard: STICK
+  Archer: BOW
+  Citizen: DIRT
+players:
