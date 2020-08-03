@@ -2,7 +2,7 @@ package de.tim.rpgcore;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -30,13 +30,27 @@ public class KnightEvents implements Listener {
         return BasicEvents.getPlayerClassMap().get(p.getName()).equals("Knight");
     }
 
+
     @EventHandler(ignoreCancelled = true)
     public void onKnightDamageEntity(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Player) {
-            Player p = (Player) e.getDamager();
-            if (isKnight(p)) {
-                e.setDamage(e.getDamage() * 1.02);
+        if (!(e.getDamager() instanceof Player)) return;
+        Player p = (Player) e.getDamager();
+        if (isKnight(p)) {
+            e.setDamage(e.getDamage() * 1.02);
+        }
+
+        LivingEntity livingEntity = (LivingEntity) e.getEntity();
+        if (livingEntity.getHealth() - e.getDamage() > 0) return;
+        if (livingEntity instanceof Player) {
+            BasicEvents.addExp(plugin, p, 20);
+        } else if (livingEntity instanceof Monster) {
+            if (livingEntity instanceof EnderDragon || livingEntity instanceof Wither) {
+                BasicEvents.addExp(plugin, p, 100);
+            } else {
+                BasicEvents.addExp(plugin, p, 10);
             }
+        } else {
+            BasicEvents.addExp(plugin, p, 5);
         }
     }
 

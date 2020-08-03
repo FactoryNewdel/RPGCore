@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class BasicEvents implements Listener {
         curExp.setScore(1);
         plugin.getConfig().set("players." + p.getName() + ".CurEXP", 0);
 
-        Score nextExp = objective.getScore(ChatColor.GREEN + "EXP for lvl up:" + ChatColor.WHITE + " 10 exp");
+        Score nextExp = objective.getScore(ChatColor.GREEN + "EXP for lvl up:" + ChatColor.WHITE + " 5 exp");
         nextExp.setScore(0);
         plugin.getConfig().set("players." + p.getName() + ".NextEXP", 5);
 
@@ -135,7 +136,7 @@ public class BasicEvents implements Listener {
         p.setScoreboard(board);
     }
 
-    private void addExp(Player p, int exp) {
+    public static void addExp(Plugin plugin, Player p, int exp) {
         Scoreboard board = p.getScoreboard();
         Objective objective = board.getObjective("class");
         int levelInt = plugin.getConfig().getInt("players." + p.getName() + ".Level");
