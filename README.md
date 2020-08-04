@@ -32,7 +32,7 @@ Monster: 10xp
 Animal: 5xp  
 Player: 20xp  
 ## Backpack
-![Backpack Recipe](/src/main/resources/BackpackRecipe.png =250x)
+![Backpack Recipe](/src/main/resources/BackpackRecipe.png)
 ## Commands
 - /reloadrpgcore: Reloads the config
 ## Permissions
