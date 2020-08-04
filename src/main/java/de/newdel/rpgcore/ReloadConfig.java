@@ -23,6 +23,7 @@ public class ReloadConfig implements CommandExecutor {
         ConfigurationSection config = plugin.getConfig();
         plugin.reloadConfig();
         Main.reloadClassMap(plugin);
+        Backpack.reloadBackpackRecipe(plugin);
         sender.sendMessage(Main.prefix + ChatColor.GREEN + "Plugin config has been reloaded!");
         return true;
     }

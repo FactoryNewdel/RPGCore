@@ -1,6 +1,26 @@
 classes:
-  Knight: IRON_SWORD
-  Wizard: STICK
-  Archer: BOW
-  Citizen: DIRT
+  Knight:
+    icon: IRON_SWORD
+    abilities:
+      sworddash: DIAMOND_SWORD
+      easycrit: FEATHER
+      stunblow: EYE_OF_ENDER
+  Wizard:
+    icon: STICK
+    abilities:
+  Archer:
+    icon: BOW
+    abilities:
+  Citizen:
+    icon: DIRT
+BackpackRecipe:
+  00: IRON_SWORD
+  01: GOLD_BLOCK
+  02: STICK
+  10: IRON_BLOCK
+  11: DIAMOND_BLOCK
+  12: LAPIS_BLOCK
+  20: BOW
+  21: REDSTONE_BLOCK
+  22: DIRT
 players:
