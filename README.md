@@ -16,7 +16,7 @@ Shows current lvl and xp and exp for next lvl up in scoreboard
 ## Classes
 ### Knight
 #### Basics
-+2% dmg with sword
++2% dmg with sword  
 +1 durability on armor
 #### Abilities
 2m Cooldown  
