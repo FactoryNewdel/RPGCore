@@ -7,6 +7,7 @@ A bukkit/spigot plugin that adds classes to the game
     - [Basics](#Basics)
     - [Abilities](#Abilities)
     - [Leveling](#Leveling)
+- [Backpack](#Backpack)
 - [Commands](#Commands)
 - [Permissions](#Permissions)
 - [Issues](#Issues)
@@ -30,6 +31,8 @@ EnderDragon/Wither: 100xp
 Monster: 10xp  
 Animal: 5xp  
 Player: 20xp  
+## Backpack
+![Backpack Recipe](/src/main/resources/BackpackRecipe.png)
 ## Commands
 - /reloadrpgcore: Reloads the config
 ## Permissions
