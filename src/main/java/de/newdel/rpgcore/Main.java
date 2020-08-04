@@ -1,4 +1,4 @@
-package de.tim.rpgcore;
+package de.newdel.rpgcore;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,6 +15,11 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        KnightCommands knightCommands = new KnightCommands(this);
+        getCommand("sworddash").setExecutor(knightCommands);
+        getCommand("easycrit").setExecutor(knightCommands);
+        getCommand("stunblow").setExecutor(knightCommands);
+
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
         getServer().getPluginManager().registerEvents(new BasicEvents(this), this);
         getServer().getPluginManager().registerEvents(new KnightEvents(this), this);
