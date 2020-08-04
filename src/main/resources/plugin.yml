@@ -1,12 +1,21 @@
 name: RPGCore
 version: ${project.version}
-main: de.tim.rpgcore.Main
+main: de.newdel.rpgcore.Main
 api-version: 1.8
 commands:
   reloadrpgcore:
     description: Reloads the config
     usage: /<command>
     permission: RPGCore.reload
+  sworddash:
+    description: Enables SwordDash
+    usage: /<command>
+  easycrit:
+    description: Enables EasyCrit
+    usage: /<command>
+  stunblow:
+    description: Enabled StunBlow
+    usage: /<command>
 
 permissions:
   RPGCore.*:

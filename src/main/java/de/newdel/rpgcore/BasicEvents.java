@@ -1,4 +1,4 @@
-package de.tim.rpgcore;
+package de.newdel.rpgcore;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
