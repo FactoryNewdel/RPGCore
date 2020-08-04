@@ -54,6 +54,7 @@ public class KnightCommands implements CommandExecutor {
         }
         addPlayerAbility(p, ability);
         if (ability == KnightAbility.EASYCRIT) Bukkit.getScheduler().runTaskLater(plugin, () -> endPlayerAbility(p, ability), 20 * 5L);
+        sender.sendMessage(Main.prefix + ChatColor.GREEN + ability.name() + " activated");
         return true;
     }
 
