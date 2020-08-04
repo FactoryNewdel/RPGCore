@@ -39,7 +39,7 @@ public final class Main extends JavaPlugin {
     public static void reloadClassMap(Plugin plugin) {
         classMap.clear();
         for (String mClass : plugin.getConfig().getConfigurationSection("classes").getKeys(false)) {
-            classMap.put(mClass, Material.getMaterial(plugin.getConfig().getString("classes." + mClass)));
+            classMap.put(mClass, Material.getMaterial(plugin.getConfig().getString("classes." + mClass + ".icon")));
         }
     }
 }
