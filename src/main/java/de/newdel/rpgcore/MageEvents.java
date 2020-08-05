@@ -1,6 +1,7 @@
 package de.newdel.rpgcore;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -133,21 +134,27 @@ public class MageEvents implements Listener {
         Projectile projectile;
         switch (activeSpell) {
             case PROJECTILE: {
-                projectile = p.launchProjectile(Arrow.class);
+                for (int i = 0; i < plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.PROJECTILE.name()); i++) {
+                    projectile = p.launchProjectile(Arrow.class);
+                    projectile.setVelocity(projectile.getVelocity().multiply(3));
+                }
                 setCooldown(p, Spell.PROJECTILE, 1);
-                break;
+                return;
             }
             case FIREBALL: {
                 Fireball fireball = p.launchProjectile(Fireball.class);
                 fireball.setIsIncendiary(false);
-                fireball.setCustomName("FireballSpell");
+                fireball.setCustomName("FireballSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.FIREBALL.name()));
                 fireball.setVelocity(fireball.getVelocity().multiply(5));
                 setCooldown(p, Spell.FIREBALL, 5);
                 return;
             }
-            case FREEZE:
+            case FREEZE: {
                 projectile = p.launchProjectile(Snowball.class);
+                projectile.setCustomName("FreezeSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.FREEZE.name()));
+                setCooldown(p, Spell.FREEZE, 5);
                 break;
+            }
             case POISON:
                 projectile = p.launchProjectile(WitherSkull.class);
                 break;
@@ -167,17 +174,26 @@ public class MageEvents implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Fireball && e.getDamager().getCustomName() != null && e.getDamager().getCustomName().equals("FireballSpell"))
+        if (e.getDamager() instanceof Fireball && e.getDamager().getCustomName() != null && e.getDamager().getCustomName().startsWith("FireballSpell"))
             e.setDamage(2);
     }
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
-        if (e.getEntity() == null || e.getEntityType() != EntityType.FIREBALL || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().equals("FireballSpell"))
-            return;
+        if (!(e.getEntity() instanceof Fireball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FireballSpell")) return;
         e.setCancelled(true);
-        e.getLocation().getWorld().createExplosion(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), 5, false, true);
+        e.getLocation().getWorld().createExplosion(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), Float.parseFloat(e.getEntity().getCustomName().split("\\s+")[1]), false, true);
     }
+
+    //Freeze
+
+    @EventHandler
+    public void onFreezeHit(ProjectileHitEvent e) {
+        if (!(e.getEntity() instanceof Snowball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FreezeSpell")) return;
+        Location hit = e.getEntity().getLocation();
+        
+    }
+
 
     //Spells in Dungeons
 
