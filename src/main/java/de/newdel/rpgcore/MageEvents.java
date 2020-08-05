@@ -201,14 +201,12 @@ public class MageEvents implements Listener {
                     player.hidePlayer(p);
                 }
 
-                System.out.println("start");
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     retreatList.remove(p.getName());
                     p.removePotionEffect(PotionEffectType.SPEED);
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.showPlayer(p);
                     }
-                    System.out.println("stop");
                 }, spellLevel * 5 * 20L);
 
                 setCooldown(p, Spell.RETREAT, 10 * spellLevel);
@@ -407,7 +405,7 @@ public class MageEvents implements Listener {
     }
 
     private boolean isSpellbook(ItemStack book) {
-        return book.getType() == Material.ENCHANTED_BOOK && book.hasItemMeta() && book.getItemMeta().hasLore()
+        return book != null && book.getType() == Material.ENCHANTED_BOOK && book.hasItemMeta() && book.getItemMeta().hasLore()
                 && spells.contains(book.getItemMeta().getLore().get(0).split("_")[1].toUpperCase());
     }
 
