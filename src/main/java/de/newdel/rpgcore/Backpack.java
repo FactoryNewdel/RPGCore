@@ -31,6 +31,7 @@ public class Backpack implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
+        if (!KnightEvents.isKnight(e.getPlayer())) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
         ItemStack hand = e.getItem();
         if (hand == null || hand.getType() != Material.CHEST) return;

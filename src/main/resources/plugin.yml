@@ -34,6 +34,9 @@ commands:
   retreat:
     description: Equips retreat spell
     usage: /<command>
+  invsteal:
+    description: Equips invsteal spell
+    usage: /<command>
 
 permissions:
   RPGCore.*:

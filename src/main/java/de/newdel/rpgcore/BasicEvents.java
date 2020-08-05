@@ -86,6 +86,7 @@ public class BasicEvents implements Listener {
             plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.POISON.name(), 0);
             plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.LIGHTNING.name(), 0);
             plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.RETREAT.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.INVSTEAL.name(), 0);
             plugin.saveConfig();
         }
     }

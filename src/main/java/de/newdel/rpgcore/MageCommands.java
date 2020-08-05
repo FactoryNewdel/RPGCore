@@ -27,7 +27,8 @@ public class MageCommands implements CommandExecutor {
         FREEZE,
         POISON,
         LIGHTNING,
-        RETREAT;
+        RETREAT,
+        INVSTEAL;
         public static Spell getByName(String name) {
             if (name.equalsIgnoreCase("projectile")) return PROJECTILE;
             else if (name.equalsIgnoreCase("fireball")) return FIREBALL;
@@ -35,6 +36,7 @@ public class MageCommands implements CommandExecutor {
             else if (name.equalsIgnoreCase("poison")) return POISON;
             else if (name.equalsIgnoreCase("lightning")) return LIGHTNING;
             else if (name.equalsIgnoreCase("retreat")) return RETREAT;
+            else if (name.equalsIgnoreCase("invsteal")) return INVSTEAL;
             else throw new IllegalArgumentException("Invalid Spell: " + name);
         }
     }
@@ -69,6 +71,11 @@ public class MageCommands implements CommandExecutor {
     }
 
     private boolean ownsSpell(Player p, Spell spell) {
+        if (spell == Spell.INVSTEAL && plugin.getConfig().getInt("players." + p.getName() + ".Spells." + spell.name()) == 0 && plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 50) {
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + spell, 1);
+            plugin.saveConfig();
+            return true;
+        }
         return plugin.getConfig().getInt("players." + p.getName() + ".Spells." + spell) > 0;
     }
 

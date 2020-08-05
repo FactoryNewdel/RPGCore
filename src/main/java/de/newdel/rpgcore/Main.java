@@ -34,6 +34,7 @@ public final class Main extends JavaPlugin {
         getCommand("poison").setExecutor(mageCommands);
         getCommand("lightning").setExecutor(mageCommands);
         getCommand("retreat").setExecutor(mageCommands);
+        getCommand("invsteal").setExecutor(mageCommands);
 
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
 

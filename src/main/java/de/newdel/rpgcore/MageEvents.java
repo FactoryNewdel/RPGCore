@@ -20,6 +20,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
@@ -61,7 +62,15 @@ public class MageEvents implements Listener {
         Player p = (Player) e.getEntity();
         if (!isMage(p)) return;
         int random = (int) (Math.random() * 100 + 1);
-        if (random <= 2) e.setCancelled(true);
+        if (random <= getInvincibilityLevel(p)) e.setCancelled(true);
+    }
+
+    private int getInvincibilityLevel(Player p) {
+        int level = plugin.getConfig().getInt("players." + p.getName() + ".Level");
+        if (level > 50) return 15;
+        else if (level > 10) return 7;
+        else if (level > 5) return 5;
+        else return 2;
     }
 
     //Use Spell Book
@@ -204,6 +213,10 @@ public class MageEvents implements Listener {
 
                 setCooldown(p, Spell.RETREAT, 10 * spellLevel);
                 return;
+            case INVSTEAL: {
+                setCooldown(p, Spell.INVSTEAL, 15);
+                return;
+            }
             default:
                 throw new RuntimeException("Invalid Projectile");
         }
@@ -294,6 +307,35 @@ public class MageEvents implements Listener {
         if (!(e.getDamager() instanceof Player)) return;
         Player p = (Player) e.getDamager();
         if (retreatList.contains(p.getName())) e.setCancelled(true);
+    }
+
+    // Invsteal
+
+    @EventHandler
+    public void onInvsteal(PlayerInteractAtEntityEvent e) {
+        Player p = e.getPlayer();
+        if (!isMage(p) || MageCommands.getActiveSpell(p) != Spell.INVSTEAL) return;
+        if (retreatList.contains(p.getName())) return;
+        ItemStack wand = p.getItemInHand();
+        if (wand == null || !wand.equals(BasicEvents.getWand())) return;
+        if (hasCooldown(p, Spell.INVSTEAL)) return;
+        if (!(e.getRightClicked() instanceof Player)) return;
+        Player target = (Player) e.getRightClicked();
+        ItemStack[] items = target.getInventory().getContents();
+        ArrayList<ItemStack> inventoryItems = new ArrayList<>();
+        for (ItemStack item : items) {
+            if (item != null) inventoryItems.add(item);
+        }
+        if (inventoryItems.size() == 0) return;
+        int random = (int) (Math.random() * 100) + 1;
+        int level = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.INVSTEAL.name());
+        if (random <= level * 10) {
+            random = (int) (Math.random() * inventoryItems.size());
+            ItemStack steal = inventoryItems.get(random);
+            target.getInventory().remove(steal);
+            p.getInventory().addItem(steal);
+            p.sendMessage(Main.prefix + ChatColor.GREEN + "You stole an item from your enemy");
+        }
     }
 
 
