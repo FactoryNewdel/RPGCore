@@ -1,5 +1,6 @@
 package de.newdel.rpgcore;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,6 +39,7 @@ public class MageEvents implements Listener {
     private static HashMap<String, HashMap<Spell, Long>> cooldownMap = new HashMap<>();
     private final List<String> spells = Arrays.asList(Spell.PROJECTILE.name(), Spell.FIREBALL.name(), Spell.FREEZE.name(), Spell.LIGHTNING.name(), Spell.POISON.name(), Spell.RETREAT.name());
     private Player lastLightningShooter = null;
+    private ArrayList<String> retreatList = new ArrayList<>();
 
     public MageEvents(Plugin plugin) {
         this.plugin = plugin;
@@ -127,6 +129,7 @@ public class MageEvents implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (!isMage(e.getPlayer())) return;
         Player p = e.getPlayer();
+        if (retreatList.contains(p.getName())) return;
         ItemStack wand = e.getItem();
         if (wand == null || !wand.equals(BasicEvents.getWand())) return;
         Spell activeSpell = MageCommands.getActiveSpell(p);
@@ -169,13 +172,38 @@ public class MageEvents implements Listener {
                 set.add(Material.AIR);
                 lastLightningShooter = p;
                 p.getWorld().strikeLightningEffect(p.getTargetBlock(set, 100).getLocation());
-                setCooldown(p, Spell.LIGHTNING, 0);
+                setCooldown(p, Spell.LIGHTNING, 60);
                 return;
             }
             case RETREAT:
-                projectile = p.launchProjectile(ThrownPotion.class);
-                setCooldown(p, Spell.RETREAT, 15);
-                break;
+                retreatList.add(p.getName());
+                int playerLevel = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.RETREAT.name());
+                int spellLevel;
+                if (playerLevel <= 3) {
+                    spellLevel = 1;
+                } else if (playerLevel <= 6) {
+                    spellLevel = 2;
+                } else if (playerLevel <= 9) {
+                    spellLevel = 3;
+                } else spellLevel = 4;
+
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, spellLevel));
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.hidePlayer(p);
+                }
+
+                System.out.println("start");
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    retreatList.remove(p.getName());
+                    p.removePotionEffect(PotionEffectType.SPEED);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.showPlayer(p);
+                    }
+                    System.out.println("stop");
+                }, spellLevel * 5 * 20L);
+
+                setCooldown(p, Spell.RETREAT, 10 * spellLevel);
+                return;
             default:
                 throw new RuntimeException("Invalid Projectile");
         }
@@ -257,6 +285,15 @@ public class MageEvents implements Listener {
                 p.damage(0);
             }
         }
+    }
+
+    // Retreat
+
+    @EventHandler(ignoreCancelled = true)
+    public void onRetreat(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player)) return;
+        Player p = (Player) e.getDamager();
+        if (retreatList.contains(p.getName())) e.setCancelled(true);
     }
 
 
