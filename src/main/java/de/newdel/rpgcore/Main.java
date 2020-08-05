@@ -47,6 +47,7 @@ public final class Main extends JavaPlugin {
 
         reloadClassMap(this);
         Backpack.reloadBackpackRecipe(this);
+        MageCommands.activateWandRecipe();
     }
 
     @Override

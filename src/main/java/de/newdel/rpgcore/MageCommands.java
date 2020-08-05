@@ -1,19 +1,24 @@
 package de.newdel.rpgcore;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
 public class MageCommands implements CommandExecutor {
 
-    private Plugin plugin;
+    private static Plugin plugin;
     private static HashMap<String, Spell> activeSpellMap = new HashMap<>();
 
     public enum Spell {
@@ -34,8 +39,8 @@ public class MageCommands implements CommandExecutor {
         }
     }
 
-    public MageCommands(Plugin plugin) {
-        this.plugin = plugin;
+    public MageCommands(Plugin mPlugin) {
+        plugin = mPlugin;
     }
 
     @Override
@@ -69,5 +74,15 @@ public class MageCommands implements CommandExecutor {
 
     private boolean ownsSpell(Player p, Spell spell) {
         return plugin.getConfig().getStringList("players." + p.getName() + ".Spells").contains(spell.name());
+    }
+
+    public static void activateWandRecipe() {
+        ShapedRecipe recipe = new ShapedRecipe(BasicEvents.getWand());
+        recipe.shape("aaa","aba","aaa");
+
+        recipe.setIngredient('a', Material.GOLD_INGOT);
+        recipe.setIngredient('b', Material.STICK);
+
+        plugin.getServer().addRecipe(recipe);
     }
 }
