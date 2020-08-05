@@ -147,6 +147,10 @@ public class MageEvents implements Listener {
             p.sendMessage(Main.prefix + ChatColor.RED + "You have to wait before doing this again");
             return;
         }
+
+        int level = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + activeSpell.name());
+        BasicEvents.addExp(plugin, p, level == 1 ? 1 : level / 2);
+
         Projectile projectile;
         switch (activeSpell) {
             case PROJECTILE: {
