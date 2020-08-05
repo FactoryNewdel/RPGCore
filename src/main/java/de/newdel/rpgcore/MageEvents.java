@@ -3,6 +3,7 @@ package de.newdel.rpgcore;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.*;
@@ -180,7 +181,8 @@ public class MageEvents implements Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
-        if (!(e.getEntity() instanceof Fireball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FireballSpell")) return;
+        if (!(e.getEntity() instanceof Fireball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FireballSpell"))
+            return;
         e.setCancelled(true);
         e.getLocation().getWorld().createExplosion(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), Float.parseFloat(e.getEntity().getCustomName().split("\\s+")[1]), false, true);
     }
@@ -189,9 +191,37 @@ public class MageEvents implements Listener {
 
     @EventHandler
     public void onFreezeHit(ProjectileHitEvent e) {
-        if (!(e.getEntity() instanceof Snowball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FreezeSpell")) return;
+        if (!(e.getEntity() instanceof Snowball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FreezeSpell"))
+            return;
         Location hit = e.getEntity().getLocation();
-        
+        double xb = hit.getBlockX();
+        double zb = hit.getBlockZ();
+        hit.setY(hit.getY() + 1);
+        while (hit.getWorld().getBlockAt(hit).getType() == Material.WATER
+                || hit.getWorld().getBlockAt(hit).getType() == Material.STATIONARY_WATER) {
+            hit.setY(hit.getY() + 1);
+        }
+        double yb = hit.getBlockY() - 1;
+        int level = Integer.parseInt(e.getEntity().getCustomName().split("\\s+")[1]);
+        int radius = 1;
+        int amount = (int) (Math.random() * (7 + level - 1) + (5 + level - 1));
+        int icedOut = 0;
+        root:
+        while (radius <= 11) {
+            for (double minX = xb - radius; minX <= xb + radius; minX++) {
+                for (double minZ = zb - radius; minZ <= zb + radius; minZ++) {
+                    if (Math.sqrt(Math.pow((minX - xb), 2) + Math.pow((minZ - zb), 2)) <= radius) {
+                        Block block = hit.getWorld().getBlockAt((int) minX, (int) yb, (int) minZ);
+                        if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) {
+                            block.setType(Material.ICE);
+                            icedOut++;
+                        }
+                        if (icedOut >= amount) break root;
+                    }
+                }
+            }
+            radius += 2;
+        }
     }
 
 
@@ -242,9 +272,9 @@ public class MageEvents implements Listener {
         ItemStack drop = e.getItemDrop().getItemStack();
         ItemMeta dropMeta = drop.getItemMeta();
         if (!isSpellbook(drop)) return;
-        for (Entity entity : e.getItemDrop().getNearbyEntities(3,3,3)) {
+        for (Entity entity : e.getItemDrop().getNearbyEntities(3, 3, 3)) {
             if (!(entity instanceof Item)) continue;
-            ItemStack item = ((Item)entity).getItemStack();
+            ItemStack item = ((Item) entity).getItemStack();
             if (!isSpellbook(item)) continue;
             int level = 1;
             if (item.getItemMeta().getLore().size() != 1) {
