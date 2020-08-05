@@ -69,7 +69,7 @@ public class MageCommands implements CommandExecutor {
     }
 
     private boolean ownsSpell(Player p, Spell spell) {
-        return plugin.getConfig().getStringList("players." + p.getName() + ".Spells").contains(spell.name());
+        return plugin.getConfig().getInt("players." + p.getName() + ".Spells." + spell) > 0;
     }
 
     public static void activateWandRecipe() {

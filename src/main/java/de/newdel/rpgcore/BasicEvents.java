@@ -1,5 +1,7 @@
 package de.newdel.rpgcore;
 
+import de.newdel.rpgcore.MageCommands.Spell;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -39,7 +41,7 @@ public class BasicEvents implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> setScoreboard(p), 20 * 1L);
             playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".Class"));
             if (MageEvents.isMage(p)) {
-                MageCommands.setActiveSpell(p, MageCommands.Spell.FIREBALL);
+                MageCommands.setActiveSpell(p, Spell.PROJECTILE);
             }
             return;
         }
@@ -78,9 +80,12 @@ public class BasicEvents implements Listener {
         if (className.equals("Mage")) {
             p.getInventory().addItem(getWand());
             MageCommands.setActiveSpell(p, MageCommands.Spell.PROJECTILE);
-            plugin.getConfig().set("players." + p.getName() + ".Spells", Arrays.asList(MageCommands.Spell.PROJECTILE.name() + " 0", MageCommands.Spell.FIREBALL.name() + " 0",
-                    MageCommands.Spell.FREEZE.name() + " 0", MageCommands.Spell.POISON.name() + " 0",
-                    MageCommands.Spell.LIGHTNING.name() + " 0", MageCommands.Spell.RETREAT.name() + " 0"));
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.PROJECTILE.name(), 1);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.FIREBALL.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.FREEZE.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.POISON.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.LIGHTNING.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.RETREAT.name(), 0);
             plugin.saveConfig();
         }
     }

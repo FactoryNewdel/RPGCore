@@ -12,6 +12,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.inventory.ItemStack;
@@ -20,15 +25,13 @@ import org.bukkit.plugin.Plugin;
 import de.newdel.rpgcore.MageCommands.Spell;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class MageEvents implements Listener {
 
     private Plugin plugin;
     private static HashMap<String, HashMap<Spell, Long>> cooldownMap = new HashMap<>();
+    private final List<String> spells = Arrays.asList(Spell.PROJECTILE.name(), Spell.FIREBALL.name(), Spell.FREEZE.name(), Spell.LIGHTNING.name(), Spell.POISON.name(), Spell.RETREAT.name());
 
 
     public MageEvents(Plugin plugin) {
@@ -65,8 +68,7 @@ public class MageEvents implements Listener {
             return;
         }
         ItemStack spellBook = e.getItem();
-        if (spellBook == null || spellBook.getType() != Material.ENCHANTED_BOOK
-            || !spellBook.hasItemMeta() || !spellBook.getItemMeta().hasLore()) return;
+        if (!isSpellbook(spellBook)) return;
         Spell spell = null;
         for (String lore : spellBook.getItemMeta().getLore()) {
             if (lore.startsWith("_") && lore.endsWith("_")) {
@@ -74,15 +76,42 @@ public class MageEvents implements Listener {
                 break;
             }
         }
-        List<String> list = plugin.getConfig().getStringList("players." + p.getName() + ".Spells");
-        if (list.contains(spell.name())) {
-            p.sendMessage(Main.prefix + ChatColor.RED + "You already know this spell");
+        if (spell == null) return;
+        int level = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + spell.name());
+        if (level > 10) {
+            p.sendMessage(Main.prefix + ChatColor.RED + spell.name() + " is already on max level");
             return;
         }
-        list.add(spell.name());
-        plugin.getConfig().set("players." + p.getName() + ".Spells", list);
+
+        int cost = level + 1;
+        int amount;
+
+        try {
+            amount = Integer.parseInt(spellBook.getItemMeta().getLore().get(1));
+        } catch (NullPointerException exception) {
+            amount = 1;
+        }
+
+        if (amount < cost) {
+            p.sendMessage(Main.prefix + ChatColor.RED + "You need " + (cost - spellBook.getAmount()) + " more books to level up this spell");
+            return;
+        } else if (amount > cost) {
+            ItemMeta spellBookMeta = spellBook.getItemMeta();
+            List<String> lores = spellBookMeta.getLore();
+            lores.set(1, String.valueOf(Integer.parseInt(lores.get(1)) - cost));
+            spellBookMeta.setLore(lores);
+            spellBook.setItemMeta(spellBookMeta);
+        } else e.getPlayer().getInventory().remove(spellBook);
+
+        if (level == 0) {
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + spell.name(), 1);
+            p.sendMessage(Main.prefix + ChatColor.GREEN + "Successfully learned " + spell.name());
+        } else {
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + spell.name(), ++level);
+            p.sendMessage(Main.prefix + ChatColor.GREEN + spell.name() + " upgraded to level " + level);
+        }
+
         plugin.saveConfig();
-        p.sendMessage(Main.prefix + ChatColor.GREEN + "Successfully learned " + spell.name());
     }
 
 
@@ -96,6 +125,7 @@ public class MageEvents implements Listener {
         ItemStack wand = e.getItem();
         if (wand == null || !wand.equals(BasicEvents.getWand())) return;
         Spell activeSpell = MageCommands.getActiveSpell(p);
+
         if (hasCooldown(p, activeSpell)) {
             p.sendMessage(Main.prefix + ChatColor.RED + "You have to wait before doing this again");
             return;
@@ -115,11 +145,20 @@ public class MageEvents implements Listener {
                 setCooldown(p, Spell.FIREBALL, 5);
                 return;
             }
-            case FREEZE:     projectile = p.launchProjectile(Snowball.class);    break;
-            case POISON:     projectile = p.launchProjectile(WitherSkull.class);    break;
-            case LIGHTNING:  projectile = p.launchProjectile(FishHook.class);    break;
-            case RETREAT:    projectile = p.launchProjectile(ThrownPotion.class);    break;
-            default: throw new RuntimeException("Invalid Projectile");
+            case FREEZE:
+                projectile = p.launchProjectile(Snowball.class);
+                break;
+            case POISON:
+                projectile = p.launchProjectile(WitherSkull.class);
+                break;
+            case LIGHTNING:
+                projectile = p.launchProjectile(FishHook.class);
+                break;
+            case RETREAT:
+                projectile = p.launchProjectile(ThrownPotion.class);
+                break;
+            default:
+                throw new RuntimeException("Invalid Projectile");
         }
         projectile.setVelocity(projectile.getVelocity().multiply(3));
     }
@@ -128,12 +167,14 @@ public class MageEvents implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (e.getDamager() instanceof Fireball && e.getDamager().getCustomName() != null && e.getDamager().getCustomName().equals("FireballSpell")) e.setDamage(2);
+        if (e.getDamager() instanceof Fireball && e.getDamager().getCustomName() != null && e.getDamager().getCustomName().equals("FireballSpell"))
+            e.setDamage(2);
     }
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
-        if (e.getEntity() == null || e.getEntityType() != EntityType.FIREBALL || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().equals("FireballSpell")) return;
+        if (e.getEntity() == null || e.getEntityType() != EntityType.FIREBALL || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().equals("FireballSpell"))
+            return;
         e.setCancelled(true);
         e.getLocation().getWorld().createExplosion(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), 5, false, true);
     }
@@ -153,12 +194,23 @@ public class MageEvents implements Listener {
                 ItemMeta spellMeta = spell.getItemMeta();
                 spellMeta.setDisplayName(ChatColor.GOLD + "Spell Book");
                 switch (random) {
-                    case 1: spellMeta.setLore(Arrays.asList("_Fireball_")); break;
-                    case 2: spellMeta.setLore(Arrays.asList("_Freeze_")); break;
-                    case 3: spellMeta.setLore(Arrays.asList("_Poison_")); break;
-                    case 4: spellMeta.setLore(Arrays.asList("_Lightning_")); break;
-                    case 5: spellMeta.setLore(Arrays.asList("_Retreat_")); break;
-                    default: throw new RuntimeException("Invalid random");
+                    case 1:
+                        spellMeta.setLore(Arrays.asList("_Fireball_"));
+                        break;
+                    case 2:
+                        spellMeta.setLore(Arrays.asList("_Freeze_"));
+                        break;
+                    case 3:
+                        spellMeta.setLore(Arrays.asList("_Poison_"));
+                        break;
+                    case 4:
+                        spellMeta.setLore(Arrays.asList("_Lightning_"));
+                        break;
+                    case 5:
+                        spellMeta.setLore(Arrays.asList("_Retreat_"));
+                        break;
+                    default:
+                        throw new RuntimeException("Invalid random");
                 }
                 spell.setItemMeta(spellMeta);
                 chest.getBlockInventory().addItem(spell);
@@ -167,7 +219,40 @@ public class MageEvents implements Listener {
         }
     }
 
+    //Stack Spell Books
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent e) {
+        ItemStack drop = e.getItemDrop().getItemStack();
+        ItemMeta dropMeta = drop.getItemMeta();
+        if (!isSpellbook(drop)) return;
+        for (Entity entity : e.getItemDrop().getNearbyEntities(3,3,3)) {
+            if (!(entity instanceof Item)) continue;
+            ItemStack item = ((Item)entity).getItemStack();
+            if (!isSpellbook(item)) continue;
+            int level = 1;
+            if (item.getItemMeta().getLore().size() != 1) {
+                level = Integer.parseInt(item.getItemMeta().getLore().get(1));
+            }
+            entity.remove();
+            List<String> lores = dropMeta.getLore();
+            if (lores.size() == 1) {
+                lores.add(++level + "");
+            } else {
+                lores.set(1, String.valueOf(Integer.parseInt(lores.get(1)) + level));
+            }
+            dropMeta.setLore(lores);
+            drop.setItemMeta(dropMeta);
+        }
+    }
+
+    private boolean isSpellbook(ItemStack book) {
+        return book.getType() == Material.ENCHANTED_BOOK && book.hasItemMeta() && book.getItemMeta().hasLore()
+                && spells.contains(book.getItemMeta().getLore().get(0).split("_")[1].toUpperCase());
+    }
+
     public static void setCooldown(Player p, Spell spell, int seconds) {
+        if (!cooldownMap.containsKey(p.getName())) cooldownMap.put(p.getName(), new HashMap<>());
         cooldownMap.get(p.getName()).put(spell, System.currentTimeMillis() + 1000 * seconds);
     }
 
