@@ -25,6 +25,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import de.newdel.rpgcore.MageCommands.Spell;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -158,9 +160,10 @@ public class MageEvents implements Listener {
             }
             case POISON:
                 projectile = p.launchProjectile(WitherSkull.class);
+                projectile.setCustomName("PoisonSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.POISON.name()));
                 break;
             case LIGHTNING:
-                projectile = p.launchProjectile(FishHook.class);
+                projectile = p.launchProjectile(Egg.class);
                 break;
             case RETREAT:
                 projectile = p.launchProjectile(ThrownPotion.class);
@@ -191,8 +194,7 @@ public class MageEvents implements Listener {
 
     @EventHandler
     public void onFreezeHit(ProjectileHitEvent e) {
-        if (!(e.getEntity() instanceof Snowball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FreezeSpell"))
-            return;
+        if (!(e.getEntity() instanceof Snowball) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("FreezeSpell")) return;
         Location hit = e.getEntity().getLocation();
         double xb = hit.getBlockX();
         double zb = hit.getBlockZ();
@@ -222,6 +224,16 @@ public class MageEvents implements Listener {
             }
             radius += 2;
         }
+    }
+
+    // Poison
+
+    @EventHandler
+    public void onPoison(ProjectileHitEvent e) {
+        if (!(e.getEntity() instanceof WitherSkull) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("PoisonSpell")) return;
+        if (!(e.getEntity().getNearbyEntities(1,1,1).get(0) instanceof Player)) return;
+        Player p = (Player) e.getEntity().getNearbyEntities(1,1,1).get(0);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * 5, plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.POISON.name()) / 2));
     }
 
 
