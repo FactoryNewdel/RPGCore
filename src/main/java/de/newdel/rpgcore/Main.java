@@ -27,10 +27,19 @@ public final class Main extends JavaPlugin {
         getCommand("easycrit").setExecutor(knightCommands);
         getCommand("stunblow").setExecutor(knightCommands);
 
+        MageCommands mageCommands = new MageCommands(this);
+        getCommand("projectile").setExecutor(mageCommands);
+        getCommand("fireball").setExecutor(mageCommands);
+        getCommand("freeze").setExecutor(mageCommands);
+        getCommand("poison").setExecutor(mageCommands);
+        getCommand("lightning").setExecutor(mageCommands);
+        getCommand("retreat").setExecutor(mageCommands);
+
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
 
         getServer().getPluginManager().registerEvents(new BasicEvents(this), this);
         getServer().getPluginManager().registerEvents(new KnightEvents(this), this);
+        getServer().getPluginManager().registerEvents(new MageEvents(this), this);
         getServer().getPluginManager().registerEvents(new Backpack(), this);
 
         getConfig().options().copyDefaults(true);

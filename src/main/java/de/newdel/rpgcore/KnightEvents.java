@@ -31,7 +31,7 @@ public class KnightEvents implements Listener {
         this.plugin = plugin;
     }
 
-    private boolean isKnight(Player p) {
+    public static boolean isKnight(Player p) {
         return BasicEvents.getPlayerClassMap().get(p.getName()).equals("Knight");
     }
 

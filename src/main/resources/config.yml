@@ -1,3 +1,4 @@
+SpellLootChance: 20
 classes:
   Knight:
     icon: IRON_SWORD
@@ -5,7 +6,7 @@ classes:
       sworddash: DIAMOND_SWORD
       easycrit: FEATHER
       stunblow: EYE_OF_ENDER
-  Wizard:
+  Mage:
     icon: STICK
     abilities:
   Archer:

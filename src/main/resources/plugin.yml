@@ -16,6 +16,24 @@ commands:
   stunblow:
     description: Enabled StunBlow
     usage: /<command>
+  projectile:
+    description: Equips projectile spell
+    usage: /<command>
+  fireball:
+    description: Equips fireball spell
+    usage: /<command>
+  freeze:
+    description: Equips freeze spell
+    usage: /<command>
+  poison:
+    description: Equips poison spell
+    usage: /<command>
+  lightning:
+    description: Equips lightning
+    usage: /<command>
+  retreat:
+    description: Equips retreat spell
+    usage: /<command>
 
 permissions:
   RPGCore.*:
