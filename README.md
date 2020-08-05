@@ -1,5 +1,8 @@
 # RPGCore
-A bukkit/spigot plugin that adds classes to the game
+A bukkit/spigot plugin that adds classes to the game  
+Spawns spell books in Lootchests in Dungeons  
+Spell books can be combined by dropping them together  
+Idea and concept by Xp10d3  
 ## Table of Contents
 - [Overview](#Overview)
 - [Classes](#Classes)
@@ -7,7 +10,11 @@ A bukkit/spigot plugin that adds classes to the game
     - [Basics](#Basics)
     - [Abilities](#Abilities)
     - [Leveling](#Leveling)
-- [Backpack](#Backpack)
+  - [Mage](#Mage)
+    - [Basics](#Basics)
+    - [Spells](#Spells)
+    - [Leveling](#Leveling)
+- [Backpacks](#Backpacks)
 - [Commands](#Commands)
 - [Permissions](#Permissions)
 - [Issues](#Issues)
@@ -31,8 +38,21 @@ EnderDragon/Wither: 100xp
 Monster: 10xp  
 Animal: 5xp  
 Player: 20xp  
-## Backpack
-![Backpack Recipe](/src/main/resources/BackpackRecipe.png)
+### Mage
+#### Basics
+Chance of 2/5/7/15% on level 1/5/10/50 to prevent damage on hit  
+#### Spells
+All spells can be leveled up
+- Projectile (1 sec): Just a normal arrow
+- Fireball (5 sec): Shoots a fireball that causes a big explosion but not much damage  
+- Freeze (5 sec): Freezes a few blocks of water in a small radius  
+- Poison (30 sec): Right click a player to give him poison for a few seconds  
+- Lightning (60 sec): Summons a lightning where the player is looking at
+- Retreat (10-40 sec): Player gets invisible and speed 3 effect for a few seconds but can't hit a player
+- Invsteal (15 sec): Steal an item from the target's inventory (10% chance)
+## Backpacks
+![Ability Backpack Recipe](/src/main/resources/BackpackRecipe.png)
+![Spell Backpack Recipe](/src/main/resources/SpellBackpackRecipe.png)
 ## Commands
 - /reloadrpgcore: Reloads the config
 ## Permissions
