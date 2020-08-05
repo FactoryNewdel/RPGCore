@@ -20,6 +20,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -36,7 +37,7 @@ public class MageEvents implements Listener {
     private Plugin plugin;
     private static HashMap<String, HashMap<Spell, Long>> cooldownMap = new HashMap<>();
     private final List<String> spells = Arrays.asList(Spell.PROJECTILE.name(), Spell.FIREBALL.name(), Spell.FREEZE.name(), Spell.LIGHTNING.name(), Spell.POISON.name(), Spell.RETREAT.name());
-
+    private Player lastLightningShooter = null;
 
     public MageEvents(Plugin plugin) {
         this.plugin = plugin;
@@ -161,12 +162,19 @@ public class MageEvents implements Listener {
             case POISON:
                 projectile = p.launchProjectile(WitherSkull.class);
                 projectile.setCustomName("PoisonSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.POISON.name()));
+                setCooldown(p, Spell.POISON, 30);
                 break;
-            case LIGHTNING:
-                projectile = p.launchProjectile(Egg.class);
-                break;
+            case LIGHTNING: {
+                Set<Material> set = new HashSet<>();
+                set.add(Material.AIR);
+                lastLightningShooter = p;
+                p.getWorld().strikeLightningEffect(p.getTargetBlock(set, 100).getLocation());
+                setCooldown(p, Spell.LIGHTNING, 0);
+                return;
+            }
             case RETREAT:
                 projectile = p.launchProjectile(ThrownPotion.class);
+                setCooldown(p, Spell.RETREAT, 15);
                 break;
             default:
                 throw new RuntimeException("Invalid Projectile");
@@ -234,6 +242,21 @@ public class MageEvents implements Listener {
         if (!(e.getEntity().getNearbyEntities(1,1,1).get(0) instanceof Player)) return;
         Player p = (Player) e.getEntity().getNearbyEntities(1,1,1).get(0);
         p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * 5, plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.POISON.name()) / 2));
+    }
+
+    // Lightning
+
+    @EventHandler
+    public void onLightning(LightningStrikeEvent e) {
+        if (!e.getLightning().isEffect()) return;
+        for (Entity entity : e.getLightning().getNearbyEntities(3, 3, 3)) {
+            if (entity instanceof Player) {
+                Player p = (Player) entity;
+                if (p.equals(lastLightningShooter)) continue;
+                p.setHealth(p.getHealth() - plugin.getConfig().getInt("players." + lastLightningShooter.getName() + ".Spells." + Spell.LIGHTNING.name()));
+                p.damage(0);
+            }
+        }
     }
 
 
