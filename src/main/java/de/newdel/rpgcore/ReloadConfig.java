@@ -20,10 +20,10 @@ public class ReloadConfig implements CommandExecutor {
             sender.sendMessage(Main.prefix + ChatColor.RED + " You do not have permission " + cmd.getPermission());
             return true;
         }
-        ConfigurationSection config = plugin.getConfig();
         plugin.reloadConfig();
         Main.reloadClassMap(plugin);
-        Backpack.reloadBackpackRecipe(plugin);
+        KnightBackpack.reloadBackpackRecipe(plugin);
+        MageBackpack.reloadBackpackRecipe(plugin);
         sender.sendMessage(Main.prefix + ChatColor.GREEN + "Plugin config has been reloaded!");
         return true;
     }

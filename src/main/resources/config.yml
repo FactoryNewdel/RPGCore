@@ -1,3 +1,4 @@
+SpellLootChance: 20
 classes:
   Knight:
     icon: IRON_SWORD
@@ -5,9 +6,16 @@ classes:
       sworddash: DIAMOND_SWORD
       easycrit: FEATHER
       stunblow: EYE_OF_ENDER
-  Wizard:
+  Mage:
     icon: STICK
-    abilities:
+    spells:
+      projectile: ARROW
+      fireball: FIREWORK_CHARGE
+      freeze: SNOWBALL
+      poison: SKULL
+      lightning: STICK
+      retreat: NETHER_STAR
+      invsteal: CHEST
   Archer:
     icon: BOW
     abilities:
@@ -23,4 +31,14 @@ BackpackRecipe:
   20: BOW
   21: REDSTONE_BLOCK
   22: DIRT
+SpellBackpackRecipe:
+  00: LEATHER
+  01: REDSTONE_BLOCK
+  02: LEATHER
+  10: REDSTONE_BLOCK
+  11: CHEST
+  12: REDSTONE_BLOCK
+  20: LEATHER
+  21: REDSTONE_BLOCK
+  22: LEATHER
 players:

@@ -1,7 +1,10 @@
 package de.newdel.rpgcore;
 
+import de.newdel.rpgcore.MageCommands.Spell;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +20,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class BasicEvents implements Listener {
@@ -36,6 +40,9 @@ public class BasicEvents implements Listener {
         if (plugin.getConfig().contains("players." + p.getName())) {
             Bukkit.getScheduler().runTaskLater(plugin, () -> setScoreboard(p), 20 * 1L);
             playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".Class"));
+            if (MageEvents.isMage(p)) {
+                MageCommands.setActiveSpell(p, Spell.PROJECTILE);
+            }
             return;
         }
         chooseClassList.add(p.getName());
@@ -63,12 +70,25 @@ public class BasicEvents implements Listener {
         ItemStack item = e.getCurrentItem();
         if (item == null || !item.hasItemMeta()) return;
         String className = item.getItemMeta().getDisplayName();
-        plugin.getConfig().set("players." + e.getWhoClicked().getName() + ".Class", className);
+        Player p = (Player) e.getWhoClicked();
+        plugin.getConfig().set("players." + p.getName() + ".Class", className);
         plugin.saveConfig();
-        playerClassMap.put(e.getWhoClicked().getName(), plugin.getConfig().getString("players." + e.getWhoClicked().getName() + ".Class"));
+        playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".Class"));
         chooseClassList.remove(e.getWhoClicked().getName());
-        e.getWhoClicked().closeInventory();
-        setNewScoreboard((Player)e.getWhoClicked(), className);
+        p.closeInventory();
+        setNewScoreboard(p, className);
+        if (className.equals("Mage")) {
+            p.getInventory().addItem(getWand());
+            MageCommands.setActiveSpell(p, MageCommands.Spell.PROJECTILE);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.PROJECTILE.name(), 1);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.FIREBALL.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.FREEZE.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.POISON.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.LIGHTNING.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.RETREAT.name(), 0);
+            plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.INVSTEAL.name(), 0);
+            plugin.saveConfig();
+        }
     }
 
     private Inventory getChooseClassInventory() {
@@ -169,5 +189,14 @@ public class BasicEvents implements Listener {
 
     public static HashMap<String, String> getPlayerClassMap() {
         return playerClassMap;
+    }
+
+    public static ItemStack getWand() {
+        ItemStack wand = new ItemStack(Material.STICK);
+        ItemMeta wandMeta = wand.getItemMeta();
+        wandMeta.setDisplayName("Wand");
+        wandMeta.setLore(Arrays.asList("Mage's Wand"));
+        wand.setItemMeta(wandMeta);
+        return wand;
     }
 }

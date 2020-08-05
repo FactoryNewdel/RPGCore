@@ -22,7 +22,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class Backpack implements Listener {
+public class KnightBackpack implements Listener {
 
     private static ShapedRecipe backpackRecipe;
     private static String backpackString = "Ability Backpack";
@@ -31,6 +31,7 @@ public class Backpack implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
+        if (!KnightEvents.isKnight(e.getPlayer())) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
         ItemStack hand = e.getItem();
         if (hand == null || hand.getType() != Material.CHEST) return;
@@ -52,9 +53,7 @@ public class Backpack implements Listener {
     private Inventory getAbilityInventory(Player p) {
         Inventory inv = Bukkit.createInventory(null, 9, backpackInventoryString);
 
-        String playerClass = plugin.getConfig().getString("players." + p.getName() + ".Class");
-
-        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("classes." + playerClass + ".abilities");
+        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("classes.Knight.abilities");
         int size = cs.getKeys(false).size();
         int[] slots;
         switch (size) {
