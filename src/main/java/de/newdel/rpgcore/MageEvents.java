@@ -28,7 +28,7 @@ import java.util.List;
 public class MageEvents implements Listener {
 
     private Plugin plugin;
-    private static HashMap<String, Long> cooldownMap = new HashMap<>();
+    private static HashMap<String, HashMap<Spell, Long>> cooldownMap = new HashMap<>();
 
 
     public MageEvents(Plugin plugin) {
@@ -95,16 +95,16 @@ public class MageEvents implements Listener {
         Player p = e.getPlayer();
         ItemStack wand = e.getItem();
         if (wand == null || !wand.equals(BasicEvents.getWand())) return;
-        if (hasCooldown(p)) {
+        Spell activeSpell = MageCommands.getActiveSpell(p);
+        if (hasCooldown(p, activeSpell)) {
             p.sendMessage(Main.prefix + ChatColor.RED + "You have to wait before doing this again");
             return;
         }
-        Spell activeSpell = MageCommands.getActiveSpell(p);
         Projectile projectile;
         switch (activeSpell) {
             case PROJECTILE: {
                 projectile = p.launchProjectile(Arrow.class);
-                setCooldown(p, 1);
+                setCooldown(p, Spell.PROJECTILE, 1);
                 break;
             }
             case FIREBALL: {
@@ -112,7 +112,7 @@ public class MageEvents implements Listener {
                 fireball.setIsIncendiary(false);
                 fireball.setCustomName("FireballSpell");
                 fireball.setVelocity(fireball.getVelocity().multiply(5));
-                setCooldown(p, 5);
+                setCooldown(p, Spell.FIREBALL, 5);
                 return;
             }
             case FREEZE:     projectile = p.launchProjectile(Snowball.class);    break;
@@ -167,13 +167,14 @@ public class MageEvents implements Listener {
         }
     }
 
-    public static void setCooldown(Player p, int seconds) {
-        cooldownMap.put(p.getName(), System.currentTimeMillis() + 1000 * seconds);
+    public static void setCooldown(Player p, Spell spell, int seconds) {
+        cooldownMap.get(p.getName()).put(spell, System.currentTimeMillis() + 1000 * seconds);
     }
 
-    public static boolean hasCooldown(Player p) {
+    public static boolean hasCooldown(Player p, Spell spell) {
         if (!cooldownMap.containsKey(p.getName())) return false;
-        if (new Date(cooldownMap.get(p.getName())).before(new Date(System.currentTimeMillis()))) {
+        if (!cooldownMap.get(p.getName()).containsKey(spell)) return false;
+        if (new Date(cooldownMap.get(p.getName()).get(spell)).before(new Date(System.currentTimeMillis()))) {
             cooldownMap.remove(p.getName());
             return false;
         } else return true;

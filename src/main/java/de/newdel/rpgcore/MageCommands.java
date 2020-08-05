@@ -51,10 +51,6 @@ public class MageCommands implements CommandExecutor {
         }
         Player p = (Player)sender;
         Spell spell = Spell.getByName(cmd.getName());
-        if (MageEvents.hasCooldown(p)) {
-            p.sendMessage(Main.prefix + ChatColor.RED + "You change your spell yet");
-            return true;
-        }
         if (!ownsSpell(p, spell)) {
             p.sendMessage(Main.prefix + ChatColor.RED + "You do not own this spell");
             return true;
