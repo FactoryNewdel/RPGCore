@@ -1,7 +1,5 @@
 # RPGCore
 A bukkit/spigot plugin that adds classes to the game  
-Spawns spell books in Lootchests in Dungeons  
-Spell books can be combined by dropping them together  
 Idea and concept by Xp10d3  
 ## Table of Contents
 - [Overview](#Overview)
@@ -21,6 +19,8 @@ Idea and concept by Xp10d3
 ## Overview
 Forces player to choose class on first join  
 Shows current lvl and xp and exp for next lvl up in scoreboard  
+Spawns spell books in Lootchests in Dungeons  
+Spell books can be combined by dropping them together  
 ## Classes
 ### Knight
 #### Basics
@@ -50,6 +50,8 @@ All spells can be leveled up
 - Lightning (60 sec): Summons a lightning where the player is looking at
 - Retreat (10-40 sec): Player gets invisible and speed 3 effect for a few seconds but can't hit a player
 - Invsteal (15 sec): Steal an item from the target's inventory (10% chance)
+#### Leveling
+Gets spellLevel / 2 ep for every spell they cast (min 1)
 ## Backpacks
 ![Ability Backpack Recipe](/src/main/resources/BackpackRecipe.png)
 ![Spell Backpack Recipe](/src/main/resources/SpellBackpackRecipe.png)
