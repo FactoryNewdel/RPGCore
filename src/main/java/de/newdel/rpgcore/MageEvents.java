@@ -79,12 +79,12 @@ public class MageEvents implements Listener {
     public void onPlayerUseSpellBook(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         Player p = e.getPlayer();
+        ItemStack spellBook = e.getItem();
+        if (!isSpellbook(spellBook)) return;
         if (!isMage(p)) {
             e.getPlayer().sendMessage(Main.prefix + ChatColor.RED + "Only mages can use spells from the cursed land");
             return;
         }
-        ItemStack spellBook = e.getItem();
-        if (!isSpellbook(spellBook)) return;
         Spell spell = null;
         for (String lore : spellBook.getItemMeta().getLore()) {
             if (lore.startsWith("_") && lore.endsWith("_")) {

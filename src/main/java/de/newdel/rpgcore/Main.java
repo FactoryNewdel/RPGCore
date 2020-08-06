@@ -33,6 +33,7 @@ public final class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new BasicEvents(this), this);
         getServer().getPluginManager().registerEvents(new KnightEvents(this), this);
+        getServer().getPluginManager().registerEvents(new ArcherEvents(this), this);
         getServer().getPluginManager().registerEvents(new MageEvents(this), this);
         getServer().getPluginManager().registerEvents(new KnightBackpack(), this);
         getServer().getPluginManager().registerEvents(new MageBackpack(), this);

@@ -17,6 +17,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
@@ -42,6 +44,8 @@ public class BasicEvents implements Listener {
             playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".Class"));
             if (MageEvents.isMage(p)) {
                 MageCommands.setActiveSpell(p, Spell.PROJECTILE);
+            } else if (ArcherEvents.isArcher(p)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
             }
             return;
         }
@@ -88,6 +92,8 @@ public class BasicEvents implements Listener {
             plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.RETREAT.name(), 0);
             plugin.getConfig().set("players." + p.getName() + ".Spells." + Spell.INVSTEAL.name(), 0);
             plugin.saveConfig();
+        } else if (className.equals("Archer")) {
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
         }
     }
 
