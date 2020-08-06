@@ -37,6 +37,9 @@ commands:
   invsteal:
     description: Equips invsteal spell
     usage: /<command>
+  arrowrain:
+    description: Activates ArrowRain
+    usage: /<command>
 
 permissions:
   RPGCore.*:

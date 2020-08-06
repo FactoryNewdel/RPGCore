@@ -29,6 +29,8 @@ public final class Main extends JavaPlugin {
         getCommand("retreat").setExecutor(mageCommands);
         getCommand("invsteal").setExecutor(mageCommands);
 
+        getCommand("arrowrain").setExecutor(new ArcherCommands(this));
+
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
 
         getServer().getPluginManager().registerEvents(new BasicEvents(this), this);
