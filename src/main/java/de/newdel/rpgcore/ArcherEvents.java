@@ -113,15 +113,18 @@ public class ArcherEvents implements Listener {
         String durabilityString = "Decreased Durability Points: " + 2;
         if (clickedItem.getType() != Material.AIR && (cursorItem.getType() == Material.AIR || isArmor(cursorItem.getType()))) {
             if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasLore() && clickedItem.getItemMeta().getLore().contains(durabilityString)) {
-                ItemMeta clickedMeta = e.getCurrentItem().getItemMeta();
+                e.setCancelled(true);
+                ItemMeta clickedMeta = clickedItem.getItemMeta();
                 List<String> lores = clickedMeta.getLore();
                 lores.remove(durabilityString);
                 clickedMeta.setLore(lores);
                 clickedItem.setItemMeta(clickedMeta);
                 clickedItem.setDurability((short) (clickedItem.getDurability() - 2));
+                e.setCurrentItem(new ItemStack(Material.AIR));
+                p.getInventory().addItem(clickedItem);
             }
         }
-        if (isArmor(cursorItem.getType()) && plugin.getConfig().getInt("players." + p.getName() + "Level") < 20) {
+        if (isArmor(cursorItem.getType()) && plugin.getConfig().getInt("players." + p.getName() + ".Level") < 20) {
             ItemMeta meta = cursorItem.getItemMeta();
             List<String> lores = meta.getLore();
             if (lores == null) lores = new ArrayList<>();
