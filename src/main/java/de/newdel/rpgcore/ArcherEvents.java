@@ -42,7 +42,6 @@ public class ArcherEvents implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
         if (!isArcher(p)) return;
-        BasicEvents.addExp(plugin, p, 5);
         Projectile projectile = (Projectile) e.getProjectile();
         projectile.setCustomName("Shooter=" + p.getUniqueId().toString());
 
@@ -97,6 +96,7 @@ public class ArcherEvents implements Listener {
         Arrow arrow = (Arrow) e.getDamager();
         if (arrow.getCustomName() == null || !arrow.getCustomName().startsWith("Shooter=")) return;
         Player p = Bukkit.getPlayer(UUID.fromString(arrow.getCustomName().split("=")[1]));
+        BasicEvents.addExp(plugin, p, 5);
         int level = plugin.getConfig().getInt("players." + p.getName() + ".Level");
         if (level < 10) e.setDamage(e.getDamage() * 1.2);
         else if (level < 50) e.setDamage(e.getDamage() * 1.25);
