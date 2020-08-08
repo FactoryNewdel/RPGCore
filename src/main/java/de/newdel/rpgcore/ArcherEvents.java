@@ -94,7 +94,7 @@ public class ArcherEvents implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         if (e.getCause() != EntityDamageEvent.DamageCause.PROJECTILE) return;
         if (!(e.getDamager() instanceof Arrow)) return;
-        Arrow arrow = (Arrow) e.getEntity();
+        Arrow arrow = (Arrow) e.getDamager();
         if (arrow.getCustomName() == null || !arrow.getCustomName().startsWith("Shooter=")) return;
         Player p = Bukkit.getPlayer(UUID.fromString(arrow.getCustomName().split("=")[1]));
         int level = plugin.getConfig().getInt("players." + p.getName() + ".Level");

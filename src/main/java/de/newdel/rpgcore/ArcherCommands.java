@@ -63,8 +63,10 @@ public class ArcherCommands implements CommandExecutor {
             return true;
         }
 
+        boolean onFire = plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 10;
         for (int i = 0; i < 10; i++) {
-            p.launchProjectile(Arrow.class);
+            Arrow arrow = p.launchProjectile(Arrow.class);
+            if (onFire) arrow.setFireTicks(Integer.MAX_VALUE);
         }
 
         rainList.put(p.getName(), System.currentTimeMillis() + (1000 * 10));
