@@ -12,6 +12,10 @@ Idea and concept by Xp10d3
     - [Basics](#Basics)
     - [Spells](#Spells)
     - [Leveling](#Leveling)
+  - [Archer](#Archer)
+    - [Basics](#Basics)
+    - [Spells](#Spells)
+    - [Leveling](#Leveling) 
 - [Backpacks](#Backpacks)
 - [Commands](#Commands)
 - [Permissions](#Permissions)
@@ -52,9 +56,23 @@ All spells can be leveled up
 - Invsteal (15 sec): Steal an item from the target's inventory (10% chance)
 #### Leveling
 Gets spellLevel / 2 ep for every spell they cast (min 1)
+### Archer
+#### Basics
++20/25/30% damage with bow on level 1/10/50  
+3/7% chance of automatically hitting the nearest entity when shooting  
+Speed 1  
+Armor has -2 durability on level < 20
+#### Spells
+Arrowrain (10 sec): 
+- Unlock at lvl 5  
+- Arrows on fire on lvl 10
+- Shoots 10 arrows at once (have to be in your inv)  
+#### Leveling
++5 ep for every hit on an entity
 ## Backpacks
-![Ability Backpack Recipe](/src/main/resources/BackpackRecipe.png)
-![Spell Backpack Recipe](/src/main/resources/SpellBackpackRecipe.png)
+![Ability Backpack Recipe](/src/main/resources/BackpackRecipe.png)  
+![Spell Backpack Recipe](/src/main/resources/SpellBackpackRecipe.png)  
+![Arrowrain Recipe](/src/main/resources/ArrowrainRecipe.png)  
 ## Commands
 - /reloadrpgcore: Reloads the config
 ## Permissions
