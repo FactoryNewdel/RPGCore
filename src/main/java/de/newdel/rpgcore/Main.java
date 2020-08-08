@@ -29,18 +29,23 @@ public final class Main extends JavaPlugin {
         getCommand("retreat").setExecutor(mageCommands);
         getCommand("invsteal").setExecutor(mageCommands);
 
+        getCommand("arrowrain").setExecutor(new ArcherCommands(this));
+
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
 
         getServer().getPluginManager().registerEvents(new BasicEvents(this), this);
         getServer().getPluginManager().registerEvents(new KnightEvents(this), this);
+        getServer().getPluginManager().registerEvents(new ArcherEvents(this), this);
         getServer().getPluginManager().registerEvents(new MageEvents(this), this);
         getServer().getPluginManager().registerEvents(new KnightBackpack(), this);
         getServer().getPluginManager().registerEvents(new MageBackpack(), this);
+        getServer().getPluginManager().registerEvents(new ArrowrainRecipe(), this);
 
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
         reloadClassMap(this);
+        ArrowrainRecipe.reloadArrowrainRecipe(this);
         KnightBackpack.reloadBackpackRecipe(this);
         MageBackpack.reloadBackpackRecipe(this);
         MageCommands.activateWandRecipe();

@@ -52,6 +52,10 @@ public class MageCommands implements CommandExecutor {
             return true;
         }
         Player p = (Player)sender;
+        if (!MageEvents.isMage(p)) {
+            p.sendMessage(Main.prefix + ChatColor.RED + "Only for Mages");
+            return true;
+        }
         Spell spell = Spell.getByName(cmd.getName());
         if (!ownsSpell(p, spell)) {
             p.sendMessage(Main.prefix + ChatColor.RED + "You do not own this spell");

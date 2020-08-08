@@ -119,18 +119,22 @@ public class KnightEvents implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent e) {
         if (e.getSlotType() != InventoryType.SlotType.ARMOR) return;
-        if (!isKnight((Player) e.getWhoClicked())) return;
+        Player p = (Player) e.getWhoClicked();
+        if (!isKnight(p)) return;
         ItemStack clickedItem = e.getCurrentItem();
         ItemStack cursorItem = e.getCursor();
         String durabilityString = "Extra Durability Points: " + 1;
         if (clickedItem.getType() != Material.AIR && (cursorItem.getType() == Material.AIR || isArmor(cursorItem.getType()))) {
             if (clickedItem.hasItemMeta() && clickedItem.getItemMeta().hasLore() && clickedItem.getItemMeta().getLore().contains(durabilityString)) {
-                ItemMeta clickedMeta = e.getCurrentItem().getItemMeta();
+                e.setCancelled(true);
+                ItemMeta clickedMeta = clickedItem.getItemMeta();
                 List<String> lores = clickedMeta.getLore();
                 lores.remove(durabilityString);
                 clickedMeta.setLore(lores);
                 clickedItem.setItemMeta(clickedMeta);
                 clickedItem.setDurability((short) (clickedItem.getDurability() + 1));
+                e.setCurrentItem(new ItemStack(Material.AIR));
+                p.getInventory().addItem(clickedItem);
             }
         }
         if (isArmor(cursorItem.getType())) {
