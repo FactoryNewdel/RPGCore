@@ -45,7 +45,7 @@ public class ArcherCommands implements CommandExecutor {
         int toRemove = 10;
         if (p.getInventory().contains(Material.ARROW, 10)) {
             for (ItemStack item : p.getInventory().getContents()) {
-                if (item != null && item.getType() == Material.ARROW) {
+                if (item != null && item.getType() == Material.ARROW && (!item.hasItemMeta() || !item.getItemMeta().hasLore())) {
                     if (item.getAmount() > toRemove) {
                         item.setAmount(item.getAmount() - toRemove);
                         break;

@@ -39,11 +39,13 @@ public final class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MageEvents(this), this);
         getServer().getPluginManager().registerEvents(new KnightBackpack(), this);
         getServer().getPluginManager().registerEvents(new MageBackpack(), this);
+        getServer().getPluginManager().registerEvents(new ArrowrainRecipe(), this);
 
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
         reloadClassMap(this);
+        ArrowrainRecipe.reloadArrowrainRecipe(this);
         KnightBackpack.reloadBackpackRecipe(this);
         MageBackpack.reloadBackpackRecipe(this);
         MageCommands.activateWandRecipe();

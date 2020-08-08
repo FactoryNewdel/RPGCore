@@ -32,7 +32,6 @@ public class KnightEvents implements Listener {
     }
 
     public static boolean isKnight(Player p) {
-        System.out.println(BasicEvents.getPlayerClassMap());
         return BasicEvents.getPlayerClassMap().get(p.getName()).equals("Knight");
     }
 

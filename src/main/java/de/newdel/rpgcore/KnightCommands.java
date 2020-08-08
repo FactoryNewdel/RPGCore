@@ -44,7 +44,6 @@ public class KnightCommands implements CommandExecutor {
             return true;
         }
         Player p = (Player)sender;
-        System.out.println("isKnight = " + KnightEvents.isKnight(p));
         if (!KnightEvents.isKnight(p)) {
             p.sendMessage(Main.prefix + ChatColor.RED + "Only for Knights");
             return true;

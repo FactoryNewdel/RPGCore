@@ -376,7 +376,6 @@ public class MageEvents implements Listener {
                 }
                 spell.setItemMeta(spellMeta);
                 chest.getBlockInventory().addItem(spell);
-                System.out.println(chest.getLocation());
             }
         }
     }
