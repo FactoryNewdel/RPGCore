@@ -36,17 +36,21 @@ public class BasicEvents implements Listener {
         this.plugin = plugin;
     }
 
+    public static boolean isCitizen(Player p) {
+        return BasicEvents.getPlayerClassMap().get(p.getName()).equals("Citizen");
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (plugin.getConfig().contains("players." + p.getName())) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> setScoreboard(p), 20 * 1L);
             playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".Class"));
             if (MageEvents.isMage(p)) {
                 MageCommands.setActiveSpell(p, Spell.PROJECTILE);
             } else if (ArcherEvents.isArcher(p)) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
-            }
+            } else if (isCitizen(p)) return;
+            Bukkit.getScheduler().runTaskLater(plugin, () -> setScoreboard(p), 20 * 1L);
             return;
         }
         chooseClassList.add(p.getName());
@@ -80,7 +84,7 @@ public class BasicEvents implements Listener {
         playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".Class"));
         chooseClassList.remove(e.getWhoClicked().getName());
         p.closeInventory();
-        setNewScoreboard(p, className);
+        if (!className.equals("Citizen")) setNewScoreboard(p, className);
         if (className.equals("Mage")) {
             p.getInventory().addItem(getWand());
             MageCommands.setActiveSpell(p, MageCommands.Spell.PROJECTILE);
