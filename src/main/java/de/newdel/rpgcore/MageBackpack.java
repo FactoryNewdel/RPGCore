@@ -59,7 +59,7 @@ public class MageBackpack implements Listener {
                 list.add(key);
             }
         }
-        int size = cs.getKeys(false).size();
+        int size = list.size();
         int[] slots;
         switch (size) {
             case 1: slots = new int[]{4};             break;
