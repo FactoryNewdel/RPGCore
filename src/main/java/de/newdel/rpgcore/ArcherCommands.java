@@ -34,7 +34,7 @@ public class ArcherCommands implements CommandExecutor {
             p.sendMessage(Main.prefix + ChatColor.RED + "Only for Archers");
             return true;
         }
-        if (plugin.getConfig().getInt("players." + p.getName() + ".Level") < 5) {
+        if (plugin.getConfig().getInt("players." + p.getName() + Main.getClassMap().get(p.getName()) + ".Level") < 5) {
             p.sendMessage(Main.prefix + ChatColor.RED + "You do not know this skill");
             return true;
         }
@@ -63,7 +63,7 @@ public class ArcherCommands implements CommandExecutor {
             return true;
         }
 
-        boolean onFire = plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 10;
+        boolean onFire = plugin.getConfig().getInt("players." + p.getName() + Main.getClassMap().get(p.getName()) + ".Level") >= 10;
         for (int i = 0; i < 10; i++) {
             Arrow arrow = p.launchProjectile(Arrow.class);
             if (onFire) arrow.setFireTicks(Integer.MAX_VALUE);

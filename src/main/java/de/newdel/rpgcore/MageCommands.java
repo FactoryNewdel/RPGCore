@@ -75,12 +75,12 @@ public class MageCommands implements CommandExecutor {
     }
 
     private boolean ownsSpell(Player p, Spell spell) {
-        if (spell == Spell.INVSTEAL && plugin.getConfig().getInt("players." + p.getName() + ".Spells." + spell.name()) == 0 && plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 50) {
-            plugin.getConfig().set("players." + p.getName() + ".Spells." + spell, 1);
+        if (spell == Spell.INVSTEAL && plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + spell.name()) == 0 && plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") >= 50) {
+            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + spell, 1);
             plugin.saveConfig();
             return true;
         }
-        return plugin.getConfig().getInt("players." + p.getName() + ".Spells." + spell) > 0;
+        return plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + spell) > 0;
     }
 
     public static void activateWandRecipe() {

@@ -64,10 +64,10 @@ public class KnightCommands implements CommandExecutor {
 
     public static boolean canUse(Plugin plugin, Player p, KnightAbility ability) {
         switch (ability) {
-            case SWORDDASH: return plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 5;
-            case EASYCRIT: return plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 10;
-            case STUNBLOW: return plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 20;
-            case BLEED: return plugin.getConfig().getInt("players." + p.getName() + ".Level") >= 50;
+            case SWORDDASH: return plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") >= 5;
+            case EASYCRIT: return plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") >= 10;
+            case STUNBLOW: return plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") >= 20;
+            case BLEED: return plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") >= 50;
             default: return false;
         }
     }

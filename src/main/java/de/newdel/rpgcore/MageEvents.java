@@ -66,7 +66,7 @@ public class MageEvents implements Listener {
     }
 
     private int getInvincibilityLevel(Player p) {
-        int level = plugin.getConfig().getInt("players." + p.getName() + ".Level");
+        int level = plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level");
         if (level > 50) return 15;
         else if (level > 10) return 7;
         else if (level > 5) return 5;
@@ -93,7 +93,7 @@ public class MageEvents implements Listener {
             }
         }
         if (spell == null) return;
-        int level = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + spell.name());
+        int level = plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + spell.name());
         if (level > 10) {
             p.sendMessage(Main.prefix + ChatColor.RED + spell.name() + " is already on max level");
             return;
@@ -120,10 +120,10 @@ public class MageEvents implements Listener {
         } else e.getPlayer().getInventory().remove(spellBook);
 
         if (level == 0) {
-            plugin.getConfig().set("players." + p.getName() + ".Spells." + spell.name(), 1);
+            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + spell.name(), 1);
             p.sendMessage(Main.prefix + ChatColor.GREEN + "Successfully learned " + spell.name());
         } else {
-            plugin.getConfig().set("players." + p.getName() + ".Spells." + spell.name(), ++level);
+            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + spell.name(), ++level);
             p.sendMessage(Main.prefix + ChatColor.GREEN + spell.name() + " upgraded to level " + level);
         }
 
@@ -148,13 +148,13 @@ public class MageEvents implements Listener {
             return;
         }
 
-        int level = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + activeSpell.name());
+        int level = plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + activeSpell.name());
         BasicEvents.addExp(plugin, p, level == 1 ? 1 : level / 2);
 
         Projectile projectile;
         switch (activeSpell) {
             case PROJECTILE: {
-                for (int i = 0; i < plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.PROJECTILE.name()); i++) {
+                for (int i = 0; i < plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + Spell.PROJECTILE.name()); i++) {
                     projectile = p.launchProjectile(Arrow.class);
                     projectile.setVelocity(projectile.getVelocity().multiply(3));
                 }
@@ -164,20 +164,20 @@ public class MageEvents implements Listener {
             case FIREBALL: {
                 Fireball fireball = p.launchProjectile(Fireball.class);
                 fireball.setIsIncendiary(false);
-                fireball.setCustomName("FireballSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.FIREBALL.name()));
+                fireball.setCustomName("FireballSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + Spell.FIREBALL.name()));
                 fireball.setVelocity(fireball.getVelocity().multiply(5));
                 setCooldown(p, Spell.FIREBALL, 5);
                 return;
             }
             case FREEZE: {
                 projectile = p.launchProjectile(Snowball.class);
-                projectile.setCustomName("FreezeSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.FREEZE.name()));
+                projectile.setCustomName("FreezeSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + Spell.FREEZE.name()));
                 setCooldown(p, Spell.FREEZE, 5);
                 break;
             }
             case POISON:
                 projectile = p.launchProjectile(WitherSkull.class);
-                projectile.setCustomName("PoisonSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.POISON.name()));
+                projectile.setCustomName("PoisonSpell " + plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + Spell.POISON.name()));
                 setCooldown(p, Spell.POISON, 30);
                 break;
             case LIGHTNING: {
@@ -190,7 +190,7 @@ public class MageEvents implements Listener {
             }
             case RETREAT:
                 retreatList.add(p.getName());
-                int playerLevel = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.RETREAT.name());
+                int playerLevel = plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + Spell.RETREAT.name());
                 int spellLevel;
                 if (playerLevel <= 3) {
                     spellLevel = 1;
@@ -284,7 +284,7 @@ public class MageEvents implements Listener {
         if (!(e.getEntity() instanceof WitherSkull) || e.getEntity().getCustomName() == null || !e.getEntity().getCustomName().startsWith("PoisonSpell")) return;
         if (!(e.getEntity().getNearbyEntities(1,1,1).get(0) instanceof Player)) return;
         Player p = (Player) e.getEntity().getNearbyEntities(1,1,1).get(0);
-        p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * 5, plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.POISON.name()) / 2));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * 5, plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + Spell.POISON.name()) / 2));
     }
 
     // Lightning
@@ -296,7 +296,7 @@ public class MageEvents implements Listener {
             if (entity instanceof Player) {
                 Player p = (Player) entity;
                 if (p.equals(lastLightningShooter)) continue;
-                p.setHealth(p.getHealth() - plugin.getConfig().getInt("players." + lastLightningShooter.getName() + ".Spells." + Spell.LIGHTNING.name()));
+                p.setHealth(p.getHealth() - plugin.getConfig().getInt("players." + lastLightningShooter.getName() + ".Mage.Spells." + Spell.LIGHTNING.name()));
                 p.damage(0);
             }
         }
@@ -330,7 +330,7 @@ public class MageEvents implements Listener {
         }
         if (inventoryItems.size() == 0) return;
         int random = (int) (Math.random() * 100) + 1;
-        int level = plugin.getConfig().getInt("players." + p.getName() + ".Spells." + Spell.INVSTEAL.name());
+        int level = plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + Spell.INVSTEAL.name());
         if (random <= level * 10) {
             random = (int) (Math.random() * inventoryItems.size());
             ItemStack steal = inventoryItems.get(random);
