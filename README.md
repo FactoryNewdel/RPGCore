@@ -19,7 +19,7 @@ Idea and [concept](https://sourceb.in/beb6d82099) by Xp10d3
   - [Citizen](#Citizen)
 - [Recipes](#Recipes)
 - [Commands](#Commands)
-  - [AdminCommands](#Admin&nbsp;Commands)
+  - [Admin\\sCommands](#Admin&nbsp;Commands)
   - [User&nbsp;Commands](#User&nbsp;Commands)
 - [Permissions](#Permissions)
 - [Issues](#Issues)
@@ -80,7 +80,7 @@ Arrowrain (10 sec):
 ![Arrowrain Recipe](/src/main/resources/ArrowrainRecipe.png)  
 ![Wand Recipe](/src/main/resources/WandRecipe.png)  
 ## Commands
-### Admin&nbsp;Commands
+### Admin\\sCommands
 - /aswitch \[Player] [Class]: Switches Players class to Class  
 - /areset [Player]: Resets Players stats in his active class  
 - /reloadrpgcore: Reloads the config  
