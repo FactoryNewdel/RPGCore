@@ -31,7 +31,7 @@ import java.util.HashMap;
 public class BasicEvents implements Listener {
 
     private Main plugin;
-    private ArrayList<String> chooseClassList = new ArrayList<>();
+    private static ArrayList<String> chooseClassList = new ArrayList<>();
     private static HashMap<String, String> playerClassMap = new HashMap<>();
     private static String invChooseClass = ChatColor.GOLD + "Choose Class";
 
@@ -90,6 +90,7 @@ public class BasicEvents implements Listener {
         p.closeInventory();
         p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         if (plugin.getConfig().contains("players." + p.getName() + "." + className)) {
+            if (InventoryLoader.inventoryExists(p, InventoryLoader.Classes.getByName(className))) InventoryLoader.loadInventory(p, InventoryLoader.Classes.getByName(className));
             p.kickPlayer("Your class has been changed. Please reconnect");
             return;
         }
@@ -221,5 +222,9 @@ public class BasicEvents implements Listener {
         plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.RETREAT.name(), 0);
         plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.INVSTEAL.name(), 0);
         plugin.saveConfig();
+    }
+
+    public static void cancelPlayer(Player p) {
+        chooseClassList.add(p.getName());
     }
 }
