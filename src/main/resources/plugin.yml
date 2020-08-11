@@ -51,7 +51,15 @@ commands:
   aswitch:
     description: Switches a players class
     usage: /<command> [Player] [Class]
-    permission: RPGCore.aswitch
+    permission: RPGCore.forceswitch
+  reset:
+    description: Resets your class
+    usage: /<command>
+    permission: RPGCore.reset
+  areset:
+    description: Resets a players class
+    usage: /<command> [Player]
+    permission: RPGCore.forcereset
 
 
 permissions:
@@ -61,8 +69,15 @@ permissions:
       RPGCore.admin:
         description: Grants access to all RPGCore admin commands
         children:
+          RPGCore.forceswitch:
+            description: Perm to change a players class
+            default: op
+          RPGCore.forcereset:
+            description: Perm to reset a players class
+            default: op
           RPGCore.reload:
             description: Perm to reload the config
+            default: op
       RPGCore.user:
         description: Grants access to all RPGCore user commands
         children:

@@ -63,6 +63,7 @@ public class KnightEvents implements Listener {
         if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getDamager();
         Player target = (Player) e.getEntity();
+        if (e.getDamager().isOnGround()) return;
         if (!isKnight(p)) return;
         if (!KnightCommands.hasAbilityActivated(p, KnightAbility.getByName("stunblow"))) return;
         if (!isSword(p.getItemInHand())) return;

@@ -31,6 +31,7 @@ public final class Main extends JavaPlugin {
 
         getCommand("arrowrain").setExecutor(new ArcherCommands(this));
 
+        getCommand("class").setExecutor(new ClassCommand(this));
         SwitchCommand switchCommand = new SwitchCommand(this);
         getCommand("switch").setExecutor(switchCommand);
         getCommand("aswitch").setExecutor(switchCommand);
