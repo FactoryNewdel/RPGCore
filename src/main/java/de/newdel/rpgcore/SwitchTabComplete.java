@@ -20,8 +20,10 @@ public class SwitchTabComplete implements TabCompleter {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 list.add(p.getName());
             }
+            return list;
         } else if (args.length == 2) {
             list.addAll(SwitchCommand.getClassList());
+            return list;
         }
         return null;
     }
