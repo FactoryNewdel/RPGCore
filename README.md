@@ -19,8 +19,8 @@ Idea and [concept](https://sourceb.in/beb6d82099) by Xp10d3
   - [Citizen](#Citizen)
 - [Recipes](#Recipes)
 - [Commands](#Commands)
-  - [Admin Commands](#Admin Commands)
-  - [User Commands](#User Commands)
+  - [Admin Commands](#AdminCommands)
+  - [User Commands](#UserCommands)
 - [Permissions](#Permissions)
 - [Issues](#Issues)
 ## Overview
