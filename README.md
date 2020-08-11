@@ -1,6 +1,6 @@
 # RPGCore
 A bukkit/spigot plugin that adds classes to the game  
-Idea and concept by Xp10d3  
+Idea and [concept](https://sourceb.in/beb6d82099) by Xp10d3  
 ## Table of Contents
 - [Overview](#Overview)
 - [Classes](#Classes)
@@ -16,8 +16,11 @@ Idea and concept by Xp10d3
     - [Basics](#Basics)
     - [Spells](#Spells)
     - [Leveling](#Leveling) 
-- [Backpacks](#Backpacks)
+  - [Citizen](#Citizen)
+- [Recipes](#Recipes)
 - [Commands](#Commands)
+  - [Admin Commands](#Admin Commands)
+  - [User Commands](#User Commands)
 - [Permissions](#Permissions)
 - [Issues](#Issues)
 ## Overview
@@ -68,13 +71,24 @@ Arrowrain (10 sec):
 - Arrows on fire on lvl 10
 - Shoots 10 arrows at once (have to be in your inv)  
 #### Leveling
-+5 ep for every hit on an entity
++5 ep for every hit on an entity  
+### Citizen
+- Just a normal Minecrafter  
 ## Backpacks
 ![Ability Backpack Recipe](/src/main/resources/BackpackRecipe.png)  
 ![Spell Backpack Recipe](/src/main/resources/SpellBackpackRecipe.png)  
 ![Arrowrain Recipe](/src/main/resources/ArrowrainRecipe.png)  
+![Wand Recipe](/src/main/resources/WandRecipe.png)  
 ## Commands
-- /reloadrpgcore: Reloads the config
+### Admin Commands
+- /aswitch \[Player] [Class]: Switches Players class to Class  
+- /areset [Player]: Resets Players stats in his active class  
+- /reloadrpgcore: Reloads the config  
+### User Commands
+- All Abilities and Spells can be activated with a Command  
+- /class: Spawns a Hologram with all information about the active class. Despawns after 30 sec  
+- /switch: Saves Inventory to file and opens the switch dialog from the first join  
+- /reset: Resets the stats of the currently active class  
 ## Permissions
 ```
 RPGCore.*:
@@ -83,11 +97,30 @@ RPGCore.*:
       RPGCore.admin:
         description: Grants access to all RPGCore admin commands
         children:
+          RPGCore.forceswitch:
+            description: Perm to change a players class
+            default: op
+          RPGCore.forcereset:
+            description: Perm to reset a players class
+            default: op
           RPGCore.reload:
             description: Perm to reload the config
+            default: op
       RPGCore.user:
         description: Grants access to all RPGCore user commands
         children:
+          RPGCore.use:
+            description: Perm to use the RPG system
+            default: true
+          RPGCore.class:
+            description: Perm to show info about your class
+            default: true
+          RPGCore.switch:
+            description: Perm to switch your class
+            default: true
+          RPGCore.reset:
+            description: Perm to reset your class
+            default: true
 ```
 ## Issues
 - Players have to rejoin on server reload
