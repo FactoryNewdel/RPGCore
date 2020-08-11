@@ -95,16 +95,7 @@ public class BasicEvents implements Listener {
         }
         if (!className.equals("Citizen")) setNewScoreboard(p, className);
         if (className.equals("Mage")) {
-            p.getInventory().addItem(getWand());
-            MageCommands.setActiveSpell(p, MageCommands.Spell.PROJECTILE);
-            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.PROJECTILE.name(), 1);
-            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.FIREBALL.name(), 0);
-            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.FREEZE.name(), 0);
-            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.POISON.name(), 0);
-            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.LIGHTNING.name(), 0);
-            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.RETREAT.name(), 0);
-            plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.INVSTEAL.name(), 0);
-            plugin.saveConfig();
+            setMageConfig(plugin, p);
         } else if (className.equals("Archer")) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
         }
@@ -217,5 +208,18 @@ public class BasicEvents implements Listener {
         wandMeta.setLore(Arrays.asList("Mage's Wand"));
         wand.setItemMeta(wandMeta);
         return wand;
+    }
+
+    public static void setMageConfig(Plugin plugin, Player p) {
+        p.getInventory().addItem(getWand());
+        MageCommands.setActiveSpell(p, MageCommands.Spell.PROJECTILE);
+        plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.PROJECTILE.name(), 1);
+        plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.FIREBALL.name(), 0);
+        plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.FREEZE.name(), 0);
+        plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.POISON.name(), 0);
+        plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.LIGHTNING.name(), 0);
+        plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.RETREAT.name(), 0);
+        plugin.getConfig().set("players." + p.getName() + ".Mage.Spells." + Spell.INVSTEAL.name(), 0);
+        plugin.saveConfig();
     }
 }

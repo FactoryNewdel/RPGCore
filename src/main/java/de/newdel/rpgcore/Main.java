@@ -35,7 +35,9 @@ public final class Main extends JavaPlugin {
         SwitchCommand switchCommand = new SwitchCommand(this);
         getCommand("switch").setExecutor(switchCommand);
         getCommand("aswitch").setExecutor(switchCommand);
-        getCommand("aswitch").setTabCompleter(new SwitchTabComplete());
+        ResetCommand resetCommand = new ResetCommand(this);
+        getCommand("reset").setExecutor(resetCommand);
+        getCommand("areset").setExecutor(resetCommand);
 
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
 
