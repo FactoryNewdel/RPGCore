@@ -53,6 +53,7 @@ public final class Main extends JavaPlugin {
         ArrowrainRecipe.reloadArrowrainRecipe(this);
         KnightBackpack.reloadBackpackRecipe(this);
         MageBackpack.reloadBackpackRecipe(this);
+        WandRecipe.reloadWandRecipe(this);
         MageCommands.activateWandRecipe();
     }
 

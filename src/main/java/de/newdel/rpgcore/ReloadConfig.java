@@ -24,6 +24,7 @@ public class ReloadConfig implements CommandExecutor {
         Main.reloadClassMap(plugin);
         KnightBackpack.reloadBackpackRecipe(plugin);
         MageBackpack.reloadBackpackRecipe(plugin);
+        WandRecipe.reloadWandRecipe(plugin);
         sender.sendMessage(Main.prefix + ChatColor.GREEN + "Plugin config has been reloaded!");
         return true;
     }
