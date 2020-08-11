@@ -47,9 +47,9 @@ public class ArcherEvents implements Listener {
 
         int random = (int) (Math.random() * 100) + 1;
         int chance;
-        if (plugin.getConfig().getInt("players." + p.getName() + ".Level") > 50) chance = 7;
+        if (plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") > 50) chance = 7;
         else chance = 3;
-        if (plugin.getConfig().getInt("players." + p.getName() + ".Level") == 187) chance = 100;
+        if (plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") == 187) chance = 100;
 
         if (random > chance) return;
 
@@ -97,7 +97,7 @@ public class ArcherEvents implements Listener {
         if (arrow.getCustomName() == null || !arrow.getCustomName().startsWith("Shooter=")) return;
         Player p = Bukkit.getPlayer(UUID.fromString(arrow.getCustomName().split("=")[1]));
         BasicEvents.addExp(plugin, p, 5);
-        int level = plugin.getConfig().getInt("players." + p.getName() + ".Level");
+        int level = plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level");
         if (level < 10) e.setDamage(e.getDamage() * 1.2);
         else if (level < 50) e.setDamage(e.getDamage() * 1.25);
         else e.setDamage(e.getDamage() * 1.3);
@@ -124,7 +124,7 @@ public class ArcherEvents implements Listener {
                 p.getInventory().addItem(clickedItem);
             }
         }
-        if (isArmor(cursorItem.getType()) && plugin.getConfig().getInt("players." + p.getName() + ".Level") < 20) {
+        if (isArmor(cursorItem.getType()) && plugin.getConfig().getInt("players." + p.getName() + "." + Main.getClassMap().get(p.getName()) + ".Level") < 20) {
             ItemMeta meta = cursorItem.getItemMeta();
             List<String> lores = meta.getLore();
             if (lores == null) lores = new ArrayList<>();

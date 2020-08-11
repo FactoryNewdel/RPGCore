@@ -31,6 +31,14 @@ public final class Main extends JavaPlugin {
 
         getCommand("arrowrain").setExecutor(new ArcherCommands(this));
 
+        getCommand("class").setExecutor(new ClassCommand(this));
+        SwitchCommand switchCommand = new SwitchCommand(this);
+        getCommand("switch").setExecutor(switchCommand);
+        getCommand("aswitch").setExecutor(switchCommand);
+        ResetCommand resetCommand = new ResetCommand(this);
+        getCommand("reset").setExecutor(resetCommand);
+        getCommand("areset").setExecutor(resetCommand);
+
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
 
         getServer().getPluginManager().registerEvents(new BasicEvents(this), this);
@@ -48,6 +56,7 @@ public final class Main extends JavaPlugin {
         ArrowrainRecipe.reloadArrowrainRecipe(this);
         KnightBackpack.reloadBackpackRecipe(this);
         MageBackpack.reloadBackpackRecipe(this);
+        WandRecipe.reloadWandRecipe(this);
         MageCommands.activateWandRecipe();
     }
 

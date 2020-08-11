@@ -55,11 +55,11 @@ public class MageBackpack implements Listener {
         ConfigurationSection cs = plugin.getConfig().getConfigurationSection("classes.Mage.spells");
         ArrayList<String> list = new ArrayList<>();
         for (String key : cs.getKeys(false)) {
-            if (plugin.getConfig().getInt("players." + p.getName() + ".Spells." + key.toUpperCase()) > 0) {
+            if (plugin.getConfig().getInt("players." + p.getName() + ".Mage.Spells." + key.toUpperCase()) > 0) {
                 list.add(key);
             }
         }
-        int size = cs.getKeys(false).size();
+        int size = list.size();
         int[] slots;
         switch (size) {
             case 1: slots = new int[]{4};             break;
