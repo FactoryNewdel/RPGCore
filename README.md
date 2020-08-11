@@ -19,7 +19,7 @@ Idea and [concept](https://sourceb.in/beb6d82099) by Xp10d3
   - [Citizen](#Citizen)
 - [Recipes](#Recipes)
 - [Commands](#Commands)
-  - [Admin&nbsp;Commands](#Admin&nbsp;Commands)
+  - [AdminCommands](#Admin&nbsp;Commands)
   - [User&nbsp;Commands](#User&nbsp;Commands)
 - [Permissions](#Permissions)
 - [Issues](#Issues)
@@ -80,11 +80,11 @@ Arrowrain (10 sec):
 ![Arrowrain Recipe](/src/main/resources/ArrowrainRecipe.png)  
 ![Wand Recipe](/src/main/resources/WandRecipe.png)  
 ## Commands
-### Admin Commands
+### Admin&nbsp;Commands
 - /aswitch \[Player] [Class]: Switches Players class to Class  
 - /areset [Player]: Resets Players stats in his active class  
 - /reloadrpgcore: Reloads the config  
-### User Commands
+### User&nbsp;Commands
 - All Abilities and Spells can be activated with a Command  
 - /class: Spawns a Hologram with all information about the active class. Despawns after 30 sec  
 - /switch: Saves Inventory to file and opens the switch dialog from the first join  
