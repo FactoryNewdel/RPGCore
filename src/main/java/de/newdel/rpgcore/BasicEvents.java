@@ -4,7 +4,10 @@ import de.newdel.rpgcore.MageCommands.Spell;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,7 +33,7 @@ public class BasicEvents implements Listener {
     private Main plugin;
     private ArrayList<String> chooseClassList = new ArrayList<>();
     private static HashMap<String, String> playerClassMap = new HashMap<>();
-    private String invChooseClass = ChatColor.GOLD + "Choose Class";
+    private static String invChooseClass = ChatColor.GOLD + "Choose Class";
 
     public BasicEvents(Main plugin) {
         this.plugin = plugin;
@@ -43,6 +46,7 @@ public class BasicEvents implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        if (!p.hasPermission("RPGCore.use")) return;
         if (plugin.getConfig().contains("players." + p.getName())) {
             playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".ActiveClass"));
             if (MageEvents.isMage(p)) {
@@ -54,7 +58,7 @@ public class BasicEvents implements Listener {
             return;
         }
         chooseClassList.add(p.getName());
-        Bukkit.getScheduler().runTaskLater(plugin, () -> p.openInventory(getChooseClassInventory()), 20 * 1L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> p.openInventory(getChooseClassInventory(plugin)), 20 * 1L);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -84,6 +88,11 @@ public class BasicEvents implements Listener {
         playerClassMap.put(p.getName(), plugin.getConfig().getString("players." + p.getName() + ".ActiveClass"));
         chooseClassList.remove(e.getWhoClicked().getName());
         p.closeInventory();
+        p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        if (plugin.getConfig().contains("players." + p.getName() + "." + className)) {
+            p.kickPlayer("Your class has been changed. Please reconnect");
+            return;
+        }
         if (!className.equals("Citizen")) setNewScoreboard(p, className);
         if (className.equals("Mage")) {
             p.getInventory().addItem(getWand());
@@ -101,7 +110,7 @@ public class BasicEvents implements Listener {
         }
     }
 
-    private Inventory getChooseClassInventory() {
+    public static Inventory getChooseClassInventory(Plugin plugin) {
         Inventory inv = Bukkit.createInventory(null, 9, invChooseClass);
 
         int i = 1;

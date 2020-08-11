@@ -31,6 +31,13 @@ public final class Main extends JavaPlugin {
 
         getCommand("arrowrain").setExecutor(new ArcherCommands(this));
 
+        SwitchCommand switchCommand = new SwitchCommand(this);
+        SwitchTabComplete switchTabComplete = new SwitchTabComplete();
+        getCommand("switch").setExecutor(switchCommand);
+        getCommand("switch").setTabCompleter(switchTabComplete);
+        getCommand("aswitch").setExecutor(switchCommand);
+        getCommand("aswitch").setTabCompleter(switchTabComplete);
+
         getCommand("reloadrpgcore").setExecutor(new ReloadConfig(this));
 
         getServer().getPluginManager().registerEvents(new BasicEvents(this), this);

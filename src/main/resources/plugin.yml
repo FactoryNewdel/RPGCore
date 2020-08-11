@@ -40,6 +40,19 @@ commands:
   arrowrain:
     description: Activates ArrowRain
     usage: /<command>
+  class:
+    description: Shows info about your class
+    usage: /<command>
+    permission: RPGCore.class
+  switch:
+    description: Switches your class
+    usage: /<command>
+    permission: RPGCore.switch
+  aswitch:
+    description: Switches a players class
+    usage: /<command> [Player] [Class]
+    permission: RPGCore.aswitch
+
 
 permissions:
   RPGCore.*:
@@ -53,5 +66,17 @@ permissions:
       RPGCore.user:
         description: Grants access to all RPGCore user commands
         children:
+          RPGCore.use:
+            description: Perm to use the RPG system
+            default: true
+          RPGCore.class:
+            description: Perm to show info about your class
+            default: true
+          RPGCore.switch:
+            description: Perm to switch your class
+            default: true
+          RPGCore.reset:
+            description: Perm to reset your class
+            default: true
 
 
