@@ -104,7 +104,7 @@ public class MageEvents implements Listener {
 
         try {
             amount = Integer.parseInt(spellBook.getItemMeta().getLore().get(1));
-        } catch (NullPointerException exception) {
+        } catch (IndexOutOfBoundsException | NullPointerException exception) {
             amount = 1;
         }
 
