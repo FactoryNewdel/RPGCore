@@ -74,7 +74,7 @@ Arrowrain (10 sec):
 +5 ep for every hit on an entity  
 ### Citizen
 - Just a normal Minecrafter  
-## Backpacks
+## Recipes
 ![Ability Backpack Recipe](/src/main/resources/BackpackRecipe.png)  
 ![Spell Backpack Recipe](/src/main/resources/SpellBackpackRecipe.png)  
 ![Arrowrain Recipe](/src/main/resources/ArrowrainRecipe.png)  
