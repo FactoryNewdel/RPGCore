@@ -35,10 +35,10 @@ Spell books can be combined by dropping them together
 +1 durability on armor
 #### Abilities
 2m Cooldown  
-- Sword Dash: Right Click a Player to deal damage with Strength 10
-- Easy Crit: Crit (+ 30% dmg) with every hit for 5 sec
-- Stun Blow: On next crit on another player the target gets 10 sec Blindness
-- Bleed: 5% chance on hit to activate Bleed effect on a Player (loses 0.5 hearts/sec for 10 sec) \#op
+- Sword Dash (lvl 5): Right Click a Player to deal damage with Strength 10
+- Easy Crit (lvl 10): Crit (+ 30% dmg) with every hit for 5 sec
+- Stun Blow (lvl 20): On next crit on another player the target gets 10 sec Blindness
+- Bleed (lvl 50): 5% chance on hit to activate Bleed effect on a Player (loses 0.5 hearts/sec for 10 sec) \#op
 #### Leveling
 Killing...  
 EnderDragon/Wither: 100xp  
